@@ -1,17 +1,21 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
+student_data = {
+    1: {"name": "슈퍼맨", "score": {"국어": 90, "수학": 65}},
+    2: {"name": "배트맨", "score": {"국어": 75, "영어": 80, "수학": 75}}
+}
+
 @app.route('/')
-@app.route('/home')
+def index():
+    return render_template("index.html", template_students = student_data)
 
-def home():
-    return 'Hello jinsol1'
+@app.route("/student/<int:id>")
+def student(id):
+    return render_template("student.html", 
+            template_name=student_data[id]["name"], 
+            template_score=student_data[id]["score"])
 
-@app.route('/user')
-
-def user():
-    return 'Hello user2'
-
-if(__name__ == '__main__'):
+if __name__ == '__main__':
     app.run(debug=True)
